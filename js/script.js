@@ -18,17 +18,14 @@ var Board = function(size) {
 	this.hammer = new Weapon(4,50);
 
 	this.generateWeapons = function() {
+		this.weapons = [this.sword, this.spear, this.hammer];
 		var i = 0;
 		while ( i<3 ) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
 			if (this.map[x][y] == 0) {
-				this.map[x][y] = this.sword.id;
-				i++;
-			}
-			if (this.map[x][y] == 0) {
-				this.map[x][y] = this.spear.id;
+				this.map[x][y] = this.weapons[i].id;
 				i++;
 			}
 		}
