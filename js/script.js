@@ -10,6 +10,19 @@ var Board = function(size) {
 	//map
 	this.map= [];
 	this.size = size;
+	this.classNames = {
+		0: "grass",
+		1: "stone",
+		2: "weapon",
+		3: "weapon",
+		4: "weapon",
+		5: "player1",
+		6: "player2"
+	};
+
+	this.getValue = function(x,y) {
+		return this.map[x][y];
+	};
 
 	this.generateStones = function() {
 		var numStones = Math.floor(0.12 * this.size * this.size); //12 percentage of the number of cells on the board
@@ -36,12 +49,14 @@ var Board = function(size) {
 		this.weapons = [this.sword, this.spear, this.hammer];
 
 
-		for (i=0; i< 3; i++) {
+		for (i=0; i< this.weapons.length; i++) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
 			if (this.map[x][y] == 0) {
 				this.map[x][y] = this.weapons[i].id;
+			} else {
+				i =- 1;
 			}
 		}
 
@@ -68,12 +83,14 @@ var Board = function(size) {
 	this.generatePlayers = function() {
 		this.player = [this.player1, this.player2];
 
-		for(i=0; i< this.player.length; i++) {
+		i=0;
+		while(i<this.player.length) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
 			if (this.map[x][y] == 0) {
 				this.map[x][y] = this.player[i].id;
+				i++;
 			}
 		}
 	}
