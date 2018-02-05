@@ -15,51 +15,36 @@ display.draw();
 
 var Display = function(size) {
 	this.size = size;
-	this.init = function() {
+	this.init = function(board) {
 		//draw grid
-		var field = document.createElement("table");
+		var field = document.createElement("div");
+		field.id += "field";
+		//column base from the size
+		field.style.setProperty('grid-template-columns', `repeat(${size}, 50px)`);
 		for (i=0; i < this.size; i++) {
-			var tr = document.createElement("tr");
+			//create column
+			var column = document.createElement("div");
+			column.className += "column";
 			for (j=0; j< this.size; j++) {
-				var td = document.createElement("td");
-				td.appendChild(document.createTextNode("0"));
-				tr.append(td);
+				//create data
+				var data = document.createElement("div");
+				data.className += "data ";
+				data.className += board.classNames[board.getValue(i,j)];
+
+				data.appendChild(document.createTextNode(" "));
+				column.append(data);
 			}
-			field.append(tr);
+			field.append(column);
 		}
 
 		var game = document.getElementById("game");
 		game.append(field);
 		document.body.append(game);
+
 	}
 
 	this.draw = function() {
-		//draw board
-		$("tr").addClass("row");
-        $("td").addClass("data");
 
 	}
 } 
 
-/*
-function start() {
-	//grid map
-	var field = document.createElement("table");
-		//grass
-		for (i=0; i < 10; i++) {
-			var tr = document.createElement("tr");
-			for (j=0; j< 10; j++) {
-				var td = document.createElement("td");
-				td.appendChild(document.createTextNode("0"));
-				tr.append(td);
-			}
-			field.append(tr);
-		}
-		var game = document.getElementById("game");
-		game.append(field);
-		document.body.append(game);
-
-        $("tr").addClass("row");
-        $("td").addClass("data");
-} 
-*/
