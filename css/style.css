@@ -9,12 +9,13 @@
 	border-spacing:0;
 	border-collapse: collapse;
 
+	height: 20px;
+
 
 } 
 
 #game {
 	display: grid;
-	background-color : pink;
 	
 }
 
@@ -25,7 +26,7 @@
 }
 
 .grass {
-	background-color: green;
+	background-color: #78ab8e;
 }
 
 .stone {
@@ -40,6 +41,11 @@
 	background-color: blue;
 }
 
+.activePlayer {
+	border: 1px white solid;
+}
+
 .player2 {
 	background-color: red;
 }
+
