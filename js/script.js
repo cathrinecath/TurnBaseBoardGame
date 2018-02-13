@@ -19,10 +19,26 @@ var Board = function(size) {
 		5: "player1",
 		6: "player2"
 	};
+	this.currentPlayer = null;
 
-	this.getValue = function(x,y) {
-		return this.map[x][y];
-	};
+	//write the method to get the class nameofgiven obj by position
+	this.getClassName = function(x,y) {
+		if (this.map[x][y] == this.currentPlayer.id ) {
+			return this.classNames[this.currentPlayer.id] + " activePlayer";
+		} 
+		return this.classNames[this.map[x][y]];
+	}
+
+	this.moveCurrentPlayer = function(direction) {
+		//goal : move player to left
+		//get currentPlayer's x y
+		//check if x-1 is within boundary
+			//check if x-1,y is free to move 
+				//set this.map x,y to grass 
+				//set this.map x-1,y to currentPlayer's id
+				//set currentPlayer's position to x-1,y through the setPosition method
+				// change currentPlayer to the other player
+	}
 
 	this.generateStones = function() {
 		var numStones = Math.floor(0.12 * this.size * this.size); //12 percentage of the number of cells on the board
@@ -90,6 +106,7 @@ var Board = function(size) {
 
 			if (this.map[x][y] == 0) {
 				this.map[x][y] = this.player[i].id;
+				this.player[i].setPosition(x,y); //get player position
 				i++;
 			}
 		}
@@ -112,6 +129,7 @@ var Board = function(size) {
 		this.generateWeapons();
 		//generate players
 		this.generatePlayers();
+		this.currentPlayer = this.player[0];
 	}
 
 }
