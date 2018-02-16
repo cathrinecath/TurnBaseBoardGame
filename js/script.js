@@ -29,6 +29,49 @@ var Board = function(size) {
 		return this.classNames[this.map[x][y]];
 	}
 
+
+
+	//weapons
+	this.sword = new Weapon(2, 20);
+	this.spear = new Weapon(3, 40);
+	this.hammer = new Weapon(4,50);
+	this.weapons = [this.sword, this.spear, this.hammer];
+	var weapon_ids;
+
+	for(i=0; i< this.weapons.length; i++) {
+		weapon_ids = this.weapons[i].id;
+		console.log(weapon_ids);
+	}
+
+	this.generateWeapons = function() {
+		
+		/*
+		for (i=0; i< this.weapons.length; i++) {
+			var x = Math.floor(Math.random() * this.size);
+			var y = Math.floor(Math.random() * this.size);
+
+			if (this.map[x][y] == 0) {
+				this.map[x][y] = this.weapons[i].id;
+			} else {
+				i =- 1;
+			}
+		} */
+
+		var i = 0;
+		while ( i<3 ) {
+			var x = Math.floor(Math.random() * this.size);
+			var y = Math.floor(Math.random() * this.size);
+
+			if (this.map[x][y] == 0) {
+				this.map[x][y] = this.weapons[i].id;
+				i++;
+			}
+		}
+	}
+
+
+
+
 	this.moveCurrentPlayer = function(direction) {
 		//goal : move player to left
 		//get currentPlayer's x y
@@ -38,6 +81,64 @@ var Board = function(size) {
 				//set this.map x-1,y to currentPlayer's id
 				//set currentPlayer's position to x-1,y through the setPosition method
 				// change currentPlayer to the other player
+		
+		var x = this.currentPlayer.x;
+		var y = this.currentPlayer.y;
+		if (direction == "left") {
+			if (x-1 >= 0) {
+				if (this.map[x-1][y] !== 1) {
+					//if this.map[x-1][y] has a weapon 
+					if (this.map[x-1][y] == weapon_ids) {
+						this.currentPlayer.setPosition(x,y);
+					} else {
+						this.map[x-1][y] = this.currentPlayer.id;
+						this.currentPlayer.setPosition(x-1,y);
+						this.map[x][y] = 0;
+					}
+				}
+			}
+		} else if (direction == "right") {
+			if (x+1 < this.size) {
+				if (this.map[x+1][y] !== 1) {
+					if(this.map[x+1][y] == weapon_ids) {
+						this.currentPlayer.setPosition(x,y);
+					} else {
+						this.map[x+1][y] = this.currentPlayer.id;
+						this.currentPlayer.setPosition(x+1,y);
+						this.map[x][y] = 0;
+					}
+				}
+			}
+		} else if (direction == "up") {
+			if (y-1 >= 0) {
+				if (this.map[x][y-1] !==1) {
+					if(this.map[x][y-1] == weapon_ids) {
+						this.currentPlayer.setPosition(x,y);
+					} else {
+						this.map[x][y-1] = this.currentPlayer.id;
+						this.currentPlayer.setPosition(x,y-1);
+						this.map[x][y] = 0;
+					}
+				}
+			}
+		} else if (direction == "down") {
+			if (y+1 < this.size) {
+				if (this.map[x][y+1] !==1) {
+					if(this.map[x][y+1] == weapon_ids) {
+						this.currentPlayer.setPosition(x,y);
+					} else {
+						this.map[x][y+1] = this.currentPlayer.id;
+						this.currentPlayer.setPosition(x,y+1);
+						this.map[x][y] = 0;
+					}
+				}
+			}
+		}
+
+
+		//this.toggleCurrentPlayer();
+		
+
 	}
 
 	this.generateStones = function() {
@@ -52,43 +153,6 @@ var Board = function(size) {
 				i++;
 			}
 		}
-	}
-
-
-
-	//weapons
-	this.sword = new Weapon(2, 20);
-	this.spear = new Weapon(3, 40);
-	this.hammer = new Weapon(4,50);
-
-	this.generateWeapons = function() {
-		this.weapons = [this.sword, this.spear, this.hammer];
-
-
-		for (i=0; i< this.weapons.length; i++) {
-			var x = Math.floor(Math.random() * this.size);
-			var y = Math.floor(Math.random() * this.size);
-
-			if (this.map[x][y] == 0) {
-				this.map[x][y] = this.weapons[i].id;
-			} else {
-				i =- 1;
-			}
-		}
-
-		/*
-		var i = 0;
-		while ( i<3 ) {
-			var x = Math.floor(Math.random() * this.size);
-			var y = Math.floor(Math.random() * this.size);
-
-			if (this.map[x][y] == 0) {
-				this.map[x][y] = this.weapons[i].id;
-				i++;
-			}
-		} */
-
-
 	}
 
 
