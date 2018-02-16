@@ -31,7 +31,7 @@ var Display = function(size) {
 				data.className += "data ";
 				data.className += board.getClassName(i,j);
 
-				data.appendChild(document.createTextNode(" "));
+				data.appendChild(document.createTextNode(board.map[i][j]));
 				column.append(data);
 			}
 			field.append(column);
@@ -46,10 +46,13 @@ var Display = function(size) {
 
 } 
 
+var board;
+var display;
+
 function start() {
-	var board = new Board(10);
+	board = new Board(10);
 	board.init(); 
-	var display = new Display(10); 
+	display = new Display(10); 
 	display.draw(board);
 
 	$("body").on('keyup', handler);
@@ -59,4 +62,25 @@ function handler(e) {
 	event.preventDefault();
 	console.log(e.which); 
 	//check e.which if left arrow key is pressed call board.moveCurrentPlayer("left");
+	switch (e.which) {
+		case 37 :
+			board.moveCurrentPlayer("left");
+			display.draw(board);
+		break;
+
+		case 39 :
+			board.moveCurrentPlayer("right");
+			display.draw(board);
+		break;
+
+		case 38 :
+			board.moveCurrentPlayer("up");
+			display.draw(board);
+		break;
+
+		case 40 :
+			board.moveCurrentPlayer("down");
+			display.draw(board);
+		break;
+	}
 }
