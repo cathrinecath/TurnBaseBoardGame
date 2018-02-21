@@ -16,13 +16,16 @@
 
 #game {
 	display: grid;
-	
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #field {
 	display: grid;
-	background-color: #fff;
+	background-color: #78ab8e;
 	color: #444;
+	height: 520px;
+	width:700px;
 }
 
 .grass {
@@ -49,3 +52,5 @@
 	background-color: red;
 }
 
+#imgPlayer1 {
+}
