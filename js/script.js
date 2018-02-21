@@ -16,10 +16,21 @@ var Board = function(size) {
 		2: "weapon",
 		3: "weapon",
 		4: "weapon",
-		5: "player1",
-		6: "player2"
+		5: "weapon",
+		6: "player1",
+		7: "player2"
 	};
 	this.currentPlayer = null;
+	this.GRASS = 0;
+	this.STONE = 1;
+	this.SWORD = 2;
+	this.SPEAR = 3;
+	this.HAMMER1 = 4;
+	this.HAMMER2 = 5;
+	this.PLAYER1 = 6;
+	this.PLAYER2 = 7;
+	this.WEAPONS = [this.sword, this.SPEAR, this.HAMMER1, this.HAMMER2];
+
 
 	//write the method to get the class nameofgiven obj by position
 	this.getClassName = function(x,y) {
@@ -32,38 +43,23 @@ var Board = function(size) {
 
 
 	//weapons
-	this.sword = new Weapon(2, 20);
-	this.spear = new Weapon(3, 40);
-	this.hammer = new Weapon(4,50);
-	this.weapons = [this.sword, this.spear, this.hammer];
-	var weapon_ids;
-
-	for(i=0; i< this.weapons.length; i++) {
-		weapon_ids = this.weapons[i].id;
-		console.log(weapon_ids);
-	}
+	this.sword = new Weapon(this.SWORD, 20);
+	this.spear = new Weapon(this.SPEAR, 40);
+	this.hammer1 = new Weapon(this.HAMMER1,50);
+	this.hammer2 = new Weapon(this.HAMMER2, 50);
+	this.weapons;
 
 	this.generateWeapons = function() {
 		
-		/*
-		for (i=0; i< this.weapons.length; i++) {
-			var x = Math.floor(Math.random() * this.size);
-			var y = Math.floor(Math.random() * this.size);
-
-			if (this.map[x][y] == 0) {
-				this.map[x][y] = this.weapons[i].id;
-			} else {
-				i =- 1;
-			}
-		} */
-
+		this.weapons = [this.sword, this.spear, this.hammer1, this.hammer2];
 		var i = 0;
-		while ( i<3 ) {
+		while ( i < this.weapons.length ) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
-			if (this.map[x][y] == 0) {
+			if (this.map[x][y] == this.GRASS) {
 				this.map[x][y] = this.weapons[i].id;
+				this.weapons[i].setPosition(x,y);
 				i++;
 			}
 		}
@@ -86,51 +82,48 @@ var Board = function(size) {
 		var y = this.currentPlayer.y;
 		if (direction == "left") {
 			if (x-1 >= 0) {
-				if (this.map[x-1][y] !== 1) {
-					//if this.map[x-1][y] has a weapon 
-					if (this.map[x-1][y] == weapon_ids) {
-						this.currentPlayer.setPosition(x,y);
-					} else {
-						this.map[x-1][y] = this.currentPlayer.id;
-						this.currentPlayer.setPosition(x-1,y);
-						this.map[x][y] = 0;
-					}
+				/*
+				if(this.map[x-1][y] == this.WEAPONS.length) {
+					
+					var tempWeapon = this.currentPlayer.currentWeapon;
+					this.currentPlayer.currentWeapon = this.HAMMER1;
+					this.map[x][y] = this.GRASS;
 				}
+				*/
+				if (this.map[x-1][y] == this.GRASS) {
+					this.map[x-1][y] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x-1,y);
+					this.map[x][y] = this.GRASS;
+					
+				} 
 			}
 		} else if (direction == "right") {
 			if (x+1 < this.size) {
-				if (this.map[x+1][y] !== 1) {
-					if(this.map[x+1][y] == weapon_ids) {
-						this.currentPlayer.setPosition(x,y);
-					} else {
-						this.map[x+1][y] = this.currentPlayer.id;
-						this.currentPlayer.setPosition(x+1,y);
-						this.map[x][y] = 0;
-					}
+				if (this.map[x+1][y] == this.GRASS) {
+					this.map[x+1][y] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x+1,y);
+					this.map[x][y] = this.GRASS;
+					
 				}
 			}
 		} else if (direction == "up") {
 			if (y-1 >= 0) {
-				if (this.map[x][y-1] !==1) {
-					if(this.map[x][y-1] == weapon_ids) {
-						this.currentPlayer.setPosition(x,y);
-					} else {
-						this.map[x][y-1] = this.currentPlayer.id;
-						this.currentPlayer.setPosition(x,y-1);
-						this.map[x][y] = 0;
-					}
+				if (this.map[x][y-1] ==this.GRASS) {
+					
+					this.map[x][y-1] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x,y-1);
+					this.map[x][y] = this.GRASS;
+					
 				}
 			}
 		} else if (direction == "down") {
 			if (y+1 < this.size) {
-				if (this.map[x][y+1] !==1) {
-					if(this.map[x][y+1] == weapon_ids) {
-						this.currentPlayer.setPosition(x,y);
-					} else {
-						this.map[x][y+1] = this.currentPlayer.id;
-						this.currentPlayer.setPosition(x,y+1);
-						this.map[x][y] = 0;
-					}
+				if (this.map[x][y+1] ==this.GRASS) {
+					
+					this.map[x][y+1] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x,y+1);
+					this.map[x][y] = this.GRASS;
+					
 				}
 			}
 		}
@@ -148,8 +141,8 @@ var Board = function(size) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
-			if (this.map[x][y] == 0) {
-				this.map[x][y] = 1;
+			if (this.map[x][y] == this.GRASS) {
+				this.map[x][y] = this.STONE;
 				i++;
 			}
 		}
@@ -157,8 +150,8 @@ var Board = function(size) {
 
 
 	//players
-	this.player1 = new Player(5);
-	this.player2 = new Player(6);
+	this.player1 = new Player(this.PLAYER1);
+	this.player2 = new Player(this.PLAYER2);
 
 	this.generatePlayers = function() {
 		this.player = [this.player1, this.player2];
@@ -168,7 +161,7 @@ var Board = function(size) {
 			var x = Math.floor(Math.random() * this.size);
 			var y = Math.floor(Math.random() * this.size);
 
-			if (this.map[x][y] == 0) {
+			if (this.map[x][y] == this.GRASS) {
 				this.map[x][y] = this.player[i].id;
 				this.player[i].setPosition(x,y); //get player position
 				i++;
@@ -181,7 +174,7 @@ var Board = function(size) {
 		var row = [];
 		for (i=0; i< this.size; i++) {
 			for (j=0; j<this.size; j++){
-				row.push(0); //initialize the row of empty spaces
+				row.push(this.GRASS); //initialize the row of empty spaces
 			}
 			this.map.push(row);
 			row=[]
@@ -202,7 +195,7 @@ var Player = function(id) {
 
 	this.id = id;
 	this.hp = 100;
-	this.damage = 5;
+	this.currentWeapon = new Weapon(0, 5);
 
 	this.x = null;
 	this.y = null;
