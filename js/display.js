@@ -42,6 +42,9 @@ var Display = function(size) {
 		game.append(field);
 		document.body.append(game);
 
+		$('#game').css({"background-color":"black", "width":"700", "height":"520px", "width":"700px", "padding":"20px"});
+		$('.player1').append('<div id="imgPlayer1"></div>');
+
 	}
 
 } 
@@ -84,3 +87,5 @@ function handler(e) {
 		break;
 	}
 }
+
+
