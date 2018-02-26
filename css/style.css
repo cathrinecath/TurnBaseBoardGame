@@ -8,10 +8,6 @@
 	padding-bottom: 15px;
 	border-spacing:0;
 	border-collapse: collapse;
-
-	height: 20px;
-
-
 } 
 
 #game {
@@ -22,14 +18,16 @@
 
 #field {
 	display: grid;
-	background-color: #78ab8e;
-	color: #444;
-	height: 520px;
-	width:700px;
+	/*background-color: #78ab8e; */
+	height: 600px;
+	width: 600px;
+
+	background-image: url('../assets/grass-block-small.png');
+	background-repeat: repeat;
 }
 
 .grass {
-	background-color: #78ab8e;
+	/*background-color: #78ab8e; */
 }
 
 .stone {
@@ -52,5 +50,19 @@
 	background-color: red;
 }
 
-#imgPlayer1 {
+.boulder_img {
+	width: 57px;
+	margin-top: -9px;
+	margin-left: -14px;
+}
+
+.sword_img {
+	width: 45px;
+	margin-top: -12px;
+	margin-left: -5px;
+}
+
+.spear_img {
+	margin-left: -10px;
+	margin-top: -18px;
 }
