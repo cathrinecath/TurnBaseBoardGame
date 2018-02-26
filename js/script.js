@@ -13,10 +13,10 @@ var Board = function(size) {
 	this.classNames = {
 		0: "grass",
 		1: "stone",
-		2: "weapon",
-		3: "weapon",
-		4: "weapon",
-		5: "weapon",
+		2: "weapon sword",
+		3: "weapon spear",
+		4: "weapon hammer",
+		5: "weapon hammer",
 		6: "player1",
 		7: "player2"
 	};
@@ -29,7 +29,6 @@ var Board = function(size) {
 	this.HAMMER2 = 5;
 	this.PLAYER1 = 6;
 	this.PLAYER2 = 7;
-	this.WEAPONS = [this.sword, this.SPEAR, this.HAMMER1, this.HAMMER2];
 
 
 	//write the method to get the class nameofgiven obj by position
@@ -39,8 +38,6 @@ var Board = function(size) {
 		} 
 		return this.classNames[this.map[x][y]];
 	}
-
-
 
 	//weapons
 	this.sword = new Weapon(this.SWORD, 20);
@@ -82,14 +79,15 @@ var Board = function(size) {
 		var y = this.currentPlayer.y;
 		if (direction == "left") {
 			if (x-1 >= 0) {
-				/*
-				if(this.map[x-1][y] == this.WEAPONS.length) {
+				
+				if(this.map[x-1][y] >= this.SWORD && this.map[x-1][y] <= this.HAMMER2) {
 					
 					var tempWeapon = this.currentPlayer.currentWeapon;
-					this.currentPlayer.currentWeapon = this.HAMMER1;
+					this.currentPlayer.currentWeapon = this.currentPlayer.setPosition(x-1,y);
+					this.currentPlayer.setPosition(x-1,y);
 					this.map[x][y] = this.GRASS;
 				}
-				*/
+				
 				if (this.map[x-1][y] == this.GRASS) {
 					this.map[x-1][y] = this.currentPlayer.id;
 					this.currentPlayer.setPosition(x-1,y);
