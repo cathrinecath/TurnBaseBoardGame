@@ -20,21 +20,23 @@ var Display = function(size) {
 		var field = document.createElement("div");
 		field.id += "field";
 		//column base from the size
-		field.style.setProperty('grid-template-columns', `repeat(${size}, 70px)`);
+		field.style.setProperty('grid-template-rows', `repeat(${size}, 60px)`);
+		field.style.setProperty('grid-template-columns', `repeat(${size}, 60px)`);
 		for (i=0; i < this.size; i++) {
 			//create column
-			var column = document.createElement("div");
-			column.className += "column";
+			//var column = document.createElement("div");
+			//column.className += "row";
 			for (j=0; j< this.size; j++) {
 				//create data
 				var data = document.createElement("div");
 				data.className += "data ";
 				data.className += board.getClassName(i,j);
 
-				data.appendChild(document.createTextNode(board.map[i][j]));
-				column.append(data);
+				//data.appendChild(document.createTextNode(board.map[i][j]));
+				//column.append(data);
+				field.append(data);
 			}
-			field.append(column);
+			//field.append(column);
 		}
 
 		var game = document.getElementById("game");
@@ -42,8 +44,11 @@ var Display = function(size) {
 		game.append(field);
 		document.body.append(game);
 
-		$('#game').css({"background-color":"black", "width":"700", "height":"520px", "width":"700px", "padding":"20px"});
-		$('.player1').append('<div id="imgPlayer1"></div>');
+		$('#game').css({"background-color":"black", "height":"600px", "width":"600px", "padding":"20px"});
+		$('.stone').append('<img src="../assets/boulder.png" class="boulder_img">');
+		$('.sword').append('<img src="../assets/sword2.png" class="sword_img">');
+		$('.spear').append('<img src="../assets/spear.png" class="spear_img">');
+		$('.hammer').append('<img src="../assets/smallhammer.png" class="hammer_img">');
 
 	}
 
