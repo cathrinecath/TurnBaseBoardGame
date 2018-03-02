@@ -77,49 +77,51 @@ var Board = function(size) {
 		
 		var x = this.currentPlayer.x;
 		var y = this.currentPlayer.y;
+
+
 		if (direction == "left") {
-			if (x-1 >= 0) {
+			if (y-1 >= 0) {
 				
-				if(this.map[x-1][y] >= this.SWORD && this.map[x-1][y] <= this.HAMMER2) {
-					
+				if(this.map[x][y-1] >= this.SWORD && this.map[x][y-1] <= this.HAMMER2) {
+
 					var tempWeapon = this.currentPlayer.currentWeapon;
-					this.currentPlayer.currentWeapon = this.currentPlayer.setPosition(x-1,y);
-					this.currentPlayer.setPosition(x-1,y);
+					this.currentPlayer.currentWeapon = this.weapons[this.map[x][y-1]];
+					this.currentPlayer.setPosition(x,y-1);
 					this.map[x][y] = this.GRASS;
 				}
 				
-				if (this.map[x-1][y] == this.GRASS) {
-					this.map[x-1][y] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x-1,y);
+				if (this.map[x][y-1] == this.GRASS) {
+					this.map[x][y-1] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x,y-1);
 					this.map[x][y] = this.GRASS;
 					
 				} 
 			}
 		} else if (direction == "right") {
-			if (x+1 < this.size) {
-				if (this.map[x+1][y] == this.GRASS) {
-					this.map[x+1][y] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x+1,y);
+			if (y+1 < this.size) {
+				if (this.map[x][y+1] == this.GRASS) {
+					this.map[x][y+1] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x,y+1);
 					this.map[x][y] = this.GRASS;
 					
 				}
 			}
 		} else if (direction == "up") {
-			if (y-1 >= 0) {
-				if (this.map[x][y-1] ==this.GRASS) {
+			if (x-1 >= 0) {
+				if (this.map[x-1][y] ==this.GRASS) {
 					
-					this.map[x][y-1] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x,y-1);
+					this.map[x-1][y] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x-1,y);
 					this.map[x][y] = this.GRASS;
 					
 				}
 			}
 		} else if (direction == "down") {
-			if (y+1 < this.size) {
-				if (this.map[x][y+1] ==this.GRASS) {
+			if (x+1 < this.size) {
+				if (this.map[x+1][y] ==this.GRASS) {
 					
-					this.map[x][y+1] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x,y+1);
+					this.map[x+1][y] = this.currentPlayer.id;
+					this.currentPlayer.setPosition(x+1,y);
 					this.map[x][y] = this.GRASS;
 					
 				}
