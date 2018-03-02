@@ -78,6 +78,12 @@ var Board = function(size) {
 		var x = this.currentPlayer.x;
 		var y = this.currentPlayer.y;
 
+		this.weapons = {
+			"2": this.sword,
+			"3": this.spear,
+			"4": this.hammer1,
+			"5": this.hammer2
+		}
 
 		if (direction == "left") {
 			if (y-1 >= 0) {
