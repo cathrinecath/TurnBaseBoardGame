@@ -44,12 +44,31 @@ var Display = function(size) {
 		game.append(field);
 		document.body.append(game);
 
-		$('#game').css({"background-color":"black", "height":"600px", "width":"600px", "padding":"20px"});
+		$('#game').css({"background-color":"black", "height":"600px", "width":"800px", "padding":"20px"});
 		$('.stone').append('<img src="../assets/boulder.png" class="boulder_img">');
 		$('.sword').append('<img src="../assets/sword2.png" class="sword_img">');
 		$('.spear').append('<img src="../assets/spear.png" class="spear_img">');
 		$('.hammer').append('<img src="../assets/smallhammer.png" class="hammer_img">');
 
+		//dashboard
+		var dashboard = $('<div id="dashboard"></div>');
+		var player1_status = $('<div id="player1_status"><h3>Player1</h3></div>');
+		var player2_status = $('<div id="player2_status"><h3>Player2</h3></div>');
+		$('#game').append(dashboard);
+		$('#dashboard').append(player1_status);
+		$('#dashboard').append(player2_status);
+
+		var $hp = $('<div id="hp"></div>');
+		var $weapon = $('<div id="hold"><p>Weapon :</p></div>');
+		var $stat_arr = [$hp, $weapon];
+		$.each($stat_arr, function(i, el) {
+			$(el).appendTo(player1_status);
+			$(el).appendTo(player2_status);
+			$('#hp').text('HP: ' + board.player1.hp);
+		})
+		
+
+		
 	}
 
 } 
