@@ -48,27 +48,51 @@ var Display = function(size) {
 		$('.stone').append('<img src="../assets/boulder.png" class="boulder_img">');
 		$('.sword').append('<img src="../assets/sword2.png" class="sword_img">');
 		$('.spear').append('<img src="../assets/spear.png" class="spear_img">');
-		$('.hammer').append('<img src="../assets/smallhammer.png" class="hammer_img">');
+		$('.hammer').append('<img src="../assets/axe2.png" class="hammer_img">');
+		$('.player1').append('<img src="../assets/player1.png" class="player1_img">');
+		$('.player2').append('<img src="../assets/player2.png" class="player2_img">');
 
 		//dashboard
 		var dashboard = $('<div id="dashboard"></div>');
 		var player1_status = $('<div id="player1_status" class="status"><h3>Player1</h3></div>');
 		var player2_status = $('<div id="player2_status" class="status"><h3>Player2</h3></div>');
+		var command = $('<div id="command"></div>');
+		var move_count = $('<div id="move"></div>');
 		$('#game').append(dashboard);
 		$('#dashboard').append(player1_status);
 		$('#dashboard').append(player2_status);
+		$('#dashboard').append(command);
+		$('#dashboard').append(move_count);
 
+		//active status highlight
+		board.activePlayerStatus = function() {
+			if (board.currentPlayer.id == board.PLAYER1 ) {
+				$('#player1_status').addClass('active_status');
+				
+			} else {
+				$('#player2_status').addClass('active_status');
+			}
+		}
+		board.activePlayerStatus();
+
+		//status elements
 		var $hp = $('<div id="hp"></div>');
 		var $weapon = $('<div id="hold"></div>');
-		var $stat_arr = [$hp, $weapon];
+		var $damage = $('<div id="damage"></div>');
+		var $stat_arr = [$hp, $weapon, $damage];
 		$.each($stat_arr, function(i, el) {
 			$(el).appendTo(".status");
 		})
 
 		$('#player1_status #hp').text('HP: ' + board.player1.hp);
 		$('#player2_status #hp').text('HP: ' + board.player2.hp);
-		$('#player1_status #hold').text('Weapon: ' + board.currentPlayer.currentWeapon);
-		$('#player2_status #hold').text('Weapon: ');
+		$('#player1_status #damage').text('Damage: ' + board.player1.currentWeapon.damage);
+		$('#player2_status #damage').text('Damage: ' + board.player2.currentWeapon.damage);
+		$('#player1_status #hold').text('Weapon: '  + board.player1.currentWeapon.name);
+		$('#move').text('Move Count: ' + board.currentPlayerAction);
+		$('#player2_status #hold').text('Weapon: ' + board.player2.currentWeapon.name);
+
+
 
 		
 	}
