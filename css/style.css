@@ -31,16 +31,39 @@
 	background-repeat: repeat;
 }
 
-#dashboard{
+#dashboard {
+	color: white;
+}
+
+#command {
+	margin-left: 20px;
 	border : 1px white solid;
 	border-radius: 5px;
-	margin-bottom: 300px;
+	margin-bottom: 20px;
 	color: white;
 	font-size: 80%;
+	padding-left: 10px;
+	padding-bottom: 250px;
+}
+
+#move {
+	margin-left: 20px;
+	margin-top: 75px;
 }
 
 #player1_status, #player2_status {
 	margin-left: 20px;
+	border : 1px white solid;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	color: white;
+	font-size: 80%;
+	padding-left: 10px;
+	padding-bottom: 15px;
+}
+
+.active_status {
+	background-color: blue;
 }
 
 .grass {
@@ -82,4 +105,22 @@
 .spear_img {
 	margin-left: -15px;
 	margin-top: -13px;
+}
+
+.hammer_img {
+	width: 60px;
+	margin-left: -10px;
+	margin-top: -15px;
+}
+
+.player1_img{
+	width:70px;
+	margin-left: -19px;
+	margin-top: -23px;
+}
+
+.player2_img {
+	width: 68px;
+	margin-left: -16px;
+	margin-top: -22px;
 }
