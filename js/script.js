@@ -20,8 +20,12 @@ var Board = function(size) {
 		6: "player1",
 		7: "player2"
 	};
+	var MAX_TURNS = 3;
+	var MIN_TURNS = 0;
+	var STONE_VARIANCE = 0.12;
+
 	this.currentPlayer = null;
-	this.currentPlayerAction = 3;
+	this.currentPlayerAction = MAX_TURNS;
 	this.GRASS = 0;
 	this.STONE = 1;
 	this.SWORD = 2;
@@ -32,13 +36,36 @@ var Board = function(size) {
 	this.PLAYER2 = 7;
 	this.PUNCH = 0;
 
+	this.sword = new Weapon(this.SWORD, "Sword", 20);
+	this.spear = new Weapon(this.SPEAR, "Spear", 40);
+	this.hammer1 = new Weapon(this.HAMMER1, "Hammer", 50);
+	this.hammer2 = new Weapon(this.HAMMER2, "Hammer", 50);
+	this.weapons = {
+			"2": this.sword,
+			"3": this.spear,
+			"4": this.hammer1,
+			"5": this.hammer2
+	}
+
+	var weapons_on_map = [this.sword, this.spear, this.hammer1, this.hammer2];
+	var weapons_with_players = [];
+
+	this.getOtherPlayer = function() {
+		if (this.currentPlayer.id == this.PLAYER1 ) {
+			return this.player2;
+		} else {
+			return this.player1;
+		}
+	}
+
 	this.switchCurrentPlayer = function() {
 		if (this.currentPlayer.id == this.PLAYER1 ) {
 			this.currentPlayer = this.player2;
 		} else {
 			this.currentPlayer = this.player1;
 		}
-		this.currentPlayerAction = 3;
+		this.currentPlayerAction = MAX_TURNS;
+		sendMessage(this.currentPlayer.name + "'s turn.");
 	}
 
 	//write the method to get the class nameofgiven obj by position
@@ -50,13 +77,10 @@ var Board = function(size) {
 	}
 
 	//weapons
-	this.sword = new Weapon(this.SWORD, "Sword", 20);
-	this.spear = new Weapon(this.SPEAR, "Spear", 40);
-	this.hammer1 = new Weapon(this.HAMMER1, "Hammer", 50);
-	this.hammer2 = new Weapon(this.HAMMER2, "Hammer", 50);
-	this.weapons;
+	
 
 	this.generateWeapons = function() {
+
 		var weapons_list = [this.sword, this.spear, this.hammer1, this.hammer2];
 		
 		var i = 0;
@@ -72,117 +96,126 @@ var Board = function(size) {
 		}
 	}
 
+	this.attackCommand = function() {
+		this.getOtherPlayer().takeDamage(this.currentPlayer.currentWeapon.damage);
+		if (this.getOtherPlayer().alive == false) {
+			$(document).off('keyup');
+			$.event.trigger ({
+				type:"gameOver",
+				detail: {
+					name: this.currentPlayer.name
+				}
+			});
+		} else {$(document).on('keyup', handler);}
+
+		this.switchCurrentPlayer();
+	}
+
 	this.moveCurrentPlayer = function(direction) {
-		//goal : move player to left
-		//get currentPlayer's x y
-		//check if x-1 is within boundary
-			//check if x-1,y is free to move 
-				//set this.map x,y to grass 
-				//set this.map x-1,y to currentPlayer's id
-				//set currentPlayer's position to x-1,y through the setPosition method
-				// change currentPlayer to the other player
-		
-		var x = this.currentPlayer.x;
-		var y = this.currentPlayer.y;
+		var oldX = this.currentPlayer.x;
+		var oldY = this.currentPlayer.y;
+		var newX = oldX;
+		var newY = oldY;
+		var tempWeapon = this.currentPlayer.currentWeapon;
+		this.clearCommandLine();
 
-		this.weapons = {
-			"2": this.sword,
-			"3": this.spear,
-			"4": this.hammer1,
-			"5": this.hammer2
+		switch(direction) {
+			case "left": newY = oldY-1; break;
+			case "right": newY = oldY+1; break;
+			case "up": newX = oldX-1; break;
+			case "down": newX = oldX+1; break;
 		}
 
-		if (direction == "left") {
-			if (y-1 >= 0) { //boundary check
-				//check if the next position is the other player
-				/*if (this.map[x][y-1] == this.PLAYER1 || this.map[x][y-1] == this.PLAYER2) {
-					
-				} */
+		if (newX >=0 && newY >=0 && newX < this.size && newY < this.size) { //boundary check
+			//check if the next position is the other player
+			if (this.map[newX][newY] == this.PLAYER1 || this.map[newX][newY] == this.PLAYER2) {
+				//do nothing
+
+			} 
+			
+			else if(this.map[newX][newY] >= this.SWORD && this.map[newX][newY] <= this.HAMMER2) { //weapon exchange
 				
-				if(this.map[x][y-1] >= this.SWORD && this.map[x][y-1] <= this.HAMMER2) { //weapon exchange
-					
-					var tempWeapon = this.currentPlayer.currentWeapon;
-					this.currentPlayer.currentWeapon = this.weapons[this.map[x][y-1]];
+				this.currentPlayer.currentWeapon = this.weapons[this.map[newX][newY]];
 
-					this.map[x][y-1] = this.currentPlayer.id;
+				this.map[newX][newY] = this.currentPlayer.id;
 
-					this.currentPlayer.setPosition(x,y-1);
-					this.map[x][y] = this.GRASS;
+				this.currentPlayer.setPosition(newX,newY);
+				this.map[oldX][oldY] = this.GRASS;
 
-					if (tempWeapon.id !== this.PUNCH) {
-						weapons_with_players.push(weapons_on_map.splice(weapons_on_map.indexOf(this.currentPlayer.currentWeapon), 1));
-					} else {
-						weapons_with_players.push(weapons_on_map.splice(weapons_on_map.indexOf(this.currentPlayer.currentWeapon), 1));
-						tempWeapon.setPosition(x, y-1);
-						weapons_on_map.push(tempWeapon);
-					}
-
-					this.currentPlayerAction -= 1;
-					
+				if (tempWeapon.id == this.PUNCH) {
+					weapons_with_players.push(weapons_on_map.splice(weapons_on_map.indexOf(this.currentPlayer.currentWeapon), 1));
+				} else {
+					weapons_with_players.push(weapons_on_map.splice(weapons_on_map.indexOf(this.currentPlayer.currentWeapon), 1));
+					tempWeapon.setPosition(newX,newY);
+					weapons_on_map.push(tempWeapon);
 				}
+
+				this.currentPlayerAction -= 1;
 				
-				else if (this.map[x][y-1] == this.GRASS) { //move to free space
-					this.currentPlayerAction -= 1;
-					this.map[x][y-1] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x,y-1);
-					this.map[x][y] = this.GRASS;
-				} 
 			}
-		} else if (direction == "right") {
-			if (y+1 < this.size) {
-				if (this.map[x][y+1] == this.GRASS) {
-					this.map[x][y+1] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x,y+1);
-					this.map[x][y] = this.GRASS;
-					this.currentPlayerAction -= 1;
+			
+			else if (this.map[newX][newY] == this.GRASS) { //move to free space
+				this.map[newX][newY] = this.currentPlayer.id;
+				this.currentPlayer.setPosition(newX,newY);
+				this.map[oldX][oldY] = this.GRASS;
+				this.currentPlayerAction -= 1;
+			} 
+
+			this.repositionWeapons();
+
+			var adjacentPosition = {
+				"up": [this.currentPlayer.x-1, this.currentPlayer.y],
+				"down": [this.currentPlayer.x+1, this.currentPlayer.y],
+				"left":[this.currentPlayer.x, this.currentPlayer.y-1],
+				"right": [this.currentPlayer.x, this.currentPlayer.y+1]
+			}
+
+			
+			//check if there is player next to each other
+			
+			for(key in adjacentPosition) {
+				if (this.checkForPlayer(adjacentPosition[key][0],adjacentPosition[key][1])) {
+					this.currentPlayerAction += 1;
+					$.event.trigger({
+						type: "warEvent"
+					});
+					break;
 				}
 			}
-		} else if (direction == "up") {
-			if (x-1 >= 0) {
-				if (this.map[x-1][y] ==this.GRASS) {
-					
-					this.map[x-1][y] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x-1,y);
-					this.map[x][y] = this.GRASS;
-					this.currentPlayerAction -= 1;
-					
-				}
+
+			if (this.currentPlayerAction == MIN_TURNS) {
+				this.switchCurrentPlayer();
 			}
-		} else if (direction == "down") {
-			if (x+1 < this.size) {
-				if (this.map[x+1][y] ==this.GRASS) {
-					
-					this.map[x+1][y] = this.currentPlayer.id;
-					this.currentPlayer.setPosition(x+1,y);
-					this.map[x][y] = this.GRASS;
-					this.currentPlayerAction -= 1;
-					
-				}
-			}
+
 		}
 
-		this.repositionWeapons();
-		if (this.currentPlayerAction == 0) {
-			this.switchCurrentPlayer();
-		}
-		
 
 	}
+
+	this.checkForPlayer = function(x,y) {
+		if (x >= 0 && y>=0 && x<this.size && y<this.size) {
+			if(this.map[x][y] == this.getOtherPlayer().id) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
-	var weapons_on_map = [this.sword, this.spear, this.hammer1, this.hammer2];
-	var weapons_with_players = [];
+	
 	this.repositionWeapons = function() {
 		for(i=0; i<weapons_on_map.length; i++) {
 			var x = weapons_on_map[i].x;
 			var y = weapons_on_map[i].y;
-
-			this.map[x][y] = weapons_on_map[i].id;
+			if (this.map[x][y] !== this.PLAYER1 && this.map[x][y] !== this.PLAYER2) {
+				this.map[x][y] = weapons_on_map[i].id;
+			}
+			
 		} 
 
 	} 
 
 	this.generateStones = function() {
-		var numStones = Math.floor(0.12 * this.size * this.size); //12 percentage of the number of cells on the board
+		var numStones = Math.floor(STONE_VARIANCE * this.size * this.size); //12 percentage of the number of cells on the board
 		var i = 0;
 		while ( i<numStones ) {
 			var x = Math.floor(Math.random() * this.size);
@@ -197,8 +230,8 @@ var Board = function(size) {
 
 
 	//players
-	this.player1 = new Player(this.PLAYER1);
-	this.player2 = new Player(this.PLAYER2);
+	this.player1 = new Player(this.PLAYER1, "Alice");
+	this.player2 = new Player(this.PLAYER2, "Bob");
 
 	this.generatePlayers = function() {
 		this.player = [this.player1, this.player2];
@@ -236,14 +269,19 @@ var Board = function(size) {
 		this.currentPlayer = this.player[0];
 	}
 
+	this.clearCommandLine = function() {
+		$('#commandLine').text('');
+	}
+
 }
 
-var Player = function(id) {
-
+var Player = function(id,name) {
+	this.name = name;
 	this.id = id;
 	this.hp = 100;
-	this.currentWeapon = new Weapon(0, "Punch", 5);
-
+	this.currentWeapon = new Weapon(0, "Punch", 10);
+	this.defend = false;
+	this.alive =true;
 	this.x = null;
 	this.y = null;
 	this.setPosition = function(x,y) {
@@ -251,6 +289,16 @@ var Player = function(id) {
 		this.y = y;
 	}
 
+	this.takeDamage = function(dp) {
+		if(this.defend) {
+			dp = dp/2;
+		}
+		this.hp = this.hp - dp;
+		this.defend = false;
+		if (this.hp <= 0) {
+			this.alive = false;
+		}
+	}
 }
 
 var Weapon = function(id, name, damage) {
