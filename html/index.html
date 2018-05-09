@@ -4,16 +4,59 @@
 	<title>Turn-based board game</title>
 	<meta charset = "utf-8">
 	<link rel="stylesheet" href="../css/style.css" />
+	<link rel="stylesheet" href="../css/jquery-ui.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Iceland" rel="stylesheet">
+
 	
 </head>
 <body>
-	<div id="game" class="wrapper"></div>
-	<button onclick="start()">Start</button>
 	
+	<div id="whole">
+		<div id="game" class="wrapper" >
+			
+		</div>
 
+		<div id="description">
+			<p id="clickStart">Click to start the game</p>
+			<button onclick="start()">Start</button>
+			<button onclick="credits()">Credits</button>
+		</div>
+		<div id="gameOver" title="Game Over" >
+			<p id="winner">
+				<span></span> has won the game. Would you like to play another game ?
+			</p>
+		</div>
 
+		<div id="actionCommand" title="Action Command">
+			<p>What would you like to do?</p>
+		</div>
+
+		<div id="credits">
+			<p>Assets : OpenGameArt.org</p>
+			<ul>
+				<li>grass block -- Daniel Cook</li>
+				<li>sword -- Shohan4556</li>
+				<li>Boulder -- Jordan Irwin (AntumDeluge)</li>
+				<li>Spear -- DezrasDragons</li>
+				<li>player1 -- sheep</li>
+				<li>Axe -- LordNeo</li>
+			</ul>
+
+			<p> Specila thanks : Harish</p>
+
+			<button onClick="back()" id="back">Back</button>
+		</div>
+
+		<div id="quit">
+			<p>You quit</p>
+			<p> Thank you for playing</p>
+		</div>
+	</div>
+
+<script src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="../js/script.js"></script>
 <script type="text/javascript" src="../js/display.js"></script>
-<script src="../js/jquery.js"></script>
+
 </body>
 </html>
