@@ -117,7 +117,7 @@
 }
 
 .player2 {
-	background-color: red;
+	/*background-color: red;*/
 
 	background-image: url('../assets/player2.png');
 	background-repeat: no-repeat;
