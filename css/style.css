@@ -1,3 +1,10 @@
+*{
+	font-family:'Iceland', cursive, sans-serif, "Times New Roman", Times, serif;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
 
 .data {
 
@@ -10,11 +17,6 @@
 	border-collapse: collapse;
 } 
 
-#game {
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .wrapper {
 	display: grid;
 	grid-template-columns: 600px 200px;
@@ -23,7 +25,6 @@
 
 #field {
 	display: grid;
-	/*background-color: #78ab8e; */
 	height: 600px;
 	width: 600px;
 
@@ -33,6 +34,7 @@
 
 #dashboard {
 	color: white;
+	font-size: 20px;
 }
 
 #command {
@@ -42,13 +44,14 @@
 	margin-bottom: 20px;
 	color: white;
 	font-size: 80%;
+	
 	padding-left: 10px;
-	padding-bottom: 250px;
+	padding-bottom: 250px; 
 }
 
 #move {
 	margin-left: 20px;
-	margin-top: 75px;
+	margin-top: 55px;
 }
 
 #player1_status, #player2_status {
@@ -66,20 +69,47 @@
 	background-color: blue;
 }
 
-.grass {
-	/*background-color: #78ab8e; */
-}
-
 .stone {
-	background-color: grey;
+	background-image: url('../assets/boulder.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 0px;
 }
 
+.sword {
+	background-image: url('../assets/sword2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 0px;
+}
+
+.spear {
+	background-image: url('../assets/spear.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 0px;
+}
+
+.hammer {
+	background-image: url('../assets/axe2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 0px;
+}
+
+/*
 .weapon {
 	background-color: yellow;
-}
+} */
 
 .player1 {
-	background-color: blue;
+	/*background-color: blue;*/
+
+	background-image: url('../assets/player1.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 0px;
+	background-size: 60px;
 }
 
 .activePlayer {
@@ -88,6 +118,12 @@
 
 .player2 {
 	background-color: red;
+
+	background-image: url('../assets/player2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 3px;
+	background-size: 60px;
 }
 
 .boulder_img {
@@ -123,4 +159,84 @@
 	width: 68px;
 	margin-left: -16px;
 	margin-top: -22px;
+}
+
+#game {
+	background-color: black;
+	height:600px; 
+	width:800px;
+	padding:20px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 5%;
+}
+
+button, #back {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border-radius: 10px;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color : white;
+    font-size: 25px;
+    box-shadow: 0px 17px 10px -10px rgba(255, 255, 255, 0.4);
+    transition: all ease-in-out 300ms;
+
+    padding-top :7px;
+    padding-bottom: 7px;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-right: 10px;
+}
+
+button:hover {
+	box-shadow: 0px 27px 20px -10px rgba(255, 255, 255, .25);
+	transform: translate(0px, -10px);
+}
+
+#description {
+	color: white;
+	text-align: center;
+	font-size: 25px;
+	position: absolute;
+	top: 40%;
+	left: 43%;
+}
+
+#gameOver, #credits, #actionCommand {
+	display: none;
+}
+
+body {
+	background-color: black;
+}
+
+#whole {
+	z-index: 2;
+	background-color: black;
+}
+
+#quit {
+	display: none;
+	z-index: 1;
+	color: white;
+	text-align: center;
+	padding-top: 20%;
+	font-size: 25px;
+}
+
+#credits {
+	display: none;
+	z-index: 1;
+	color: white;
+	text-align: center;
+	font-size: 25px;
+	position: absolute;
+	top: 30%;
+	left: 35%;
+}
+
+li{
+	list-style-type: none;
 }
