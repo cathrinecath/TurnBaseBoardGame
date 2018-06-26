@@ -8,7 +8,7 @@
 
 .data {
 
-	border: 1px solid black;
+	border: 0px solid black;
 	padding-right : 15px;
 	padding-left : 15px;
 	padding-top: 15px;
@@ -20,7 +20,7 @@
 .wrapper {
 	display: grid;
 	grid-template-columns: 600px 200px;
-	grid-gap: 5px;
+	grid-gap: 0px;
 }
 
 #field {
@@ -46,12 +46,13 @@
 	font-size: 80%;
 	
 	padding-left: 10px;
-	padding-bottom: 250px; 
+	padding-bottom: 36px; 
+	padding-top: 36px;
 }
 
 #move {
 	margin-left: 20px;
-	margin-top: 55px;
+	margin-top: 220px;
 }
 
 #player1_status, #player2_status {
@@ -90,7 +91,7 @@
 	background-position: 0px;
 }
 
-.hammer {
+.axe {
 	background-image: url('../assets/axe2.png');
 	background-repeat: no-repeat;
 	background-size: contain;
