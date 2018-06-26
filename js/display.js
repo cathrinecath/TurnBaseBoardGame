@@ -40,31 +40,19 @@ var Display = function(size) {
 		var field = $('#field');
 		field.empty();
 		for (i=0; i < this.size; i++) {
-			//create column
-			//var column = document.createElement("div");
-			//column.className += "row";
+			//column
 			for (j=0; j< this.size; j++) {
-				//create data
+				//data
 				var data = document.createElement("div");
 				data.className += "data ";
 				data.className += board.getClassName(i,j);
-
-				//data.appendChild(document.createTextNode(board.map[i][j]));
-				//column.append(data);
 				field.append(data);
 			}
-			//field.append(column);
 		}
-	
-		//game.append(field);
-
-
-		
 		this.activePlayerStatus();
-
 		this.statusUpdate();
-
 	}
+
 	//active status highlight
 	this.activePlayerStatus = function() {
 		if (board.currentPlayer.id == board.PLAYER1 ) {
@@ -77,8 +65,8 @@ var Display = function(size) {
 		}
 	}
 
+	//status elements
 	this.statusUpdate = function() {
-		//status elements
 		$('#player1_status #hp1').text('HP: ' + board.player1.hp);
 		$('#player2_status #hp2').text('HP: ' + board.player2.hp);
 		$('#player1_status #damage1').text('Damage: ' + board.player1.currentWeapon.damage);
@@ -87,13 +75,9 @@ var Display = function(size) {
 		$('#move').text('Move Count: ' + board.currentPlayerAction);
 		$('#player2_status #hold2').text('Weapon: ' + board.player2.currentWeapon.name);
 	}
-
-
-
-	
- 
-
 } 
+
+
 
 var board;
 var display;
@@ -115,6 +99,8 @@ function start() {
 
 	$('#description').hide();
 	$("#game").show();
+
+	sendMessage("Game Start!! " + board.currentPlayer.name + " 's turn.");
 }
 
 function credits() {
@@ -163,13 +149,11 @@ function initiateWar(e) {
 		buttons: {
 			Attack : function() {
 				board.attackCommand();
-				sendMessage(board.currentPlayer.name + " attacks " + board.getOtherPlayer().name);
 				$( this ).dialog( "close" );
 				display.draw(board);
 			},
 			Defend : function() {
 				board.currentPlayer.defend = true;
-				sendMessage(board.currentPlayer.name + " defends.");
 				board.switchCurrentPlayer();
 				$(document).on('keyup', handler);
 				$( this ).dialog( "close" );
@@ -181,12 +165,9 @@ function initiateWar(e) {
 }
 
 function gameOver(e) { 
-	/*
-	$('#game').text('Game Over! Player ' + e.detail.name + ' has won the game.'); */
 	$(document).off();
 	$('#winner span').text(e.detail.name); 
 	$('#gameOver').show();
-
 
 	$('#gameOver').dialog({
 		resizable: false,
